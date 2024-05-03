@@ -7,12 +7,12 @@ import {Routes, Route, Link} from 'react-router-dom'
 
 
 function App() {
-
   return (
     <>
       <h1>Ordle The Wordle</h1>
       <Link to="/"><button >Home</button></Link>
       <Link to="/randomword"><button >Random Word</button></Link>
+      {/* Both button for a later use to keep a highscore for the user and the settings to setup the RandomWord challenge */}
       <Link ><button>Leaderboard</button></Link>
       <Link ><button>Settings</button></Link>
 

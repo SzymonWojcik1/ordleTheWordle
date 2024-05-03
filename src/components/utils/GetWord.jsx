@@ -1,45 +1,40 @@
 import { useState, useEffect } from 'react';
 
 /**
- * Utils to get a word from the trouve-mot API
- * @param {*} param0 type : 'daily' or 'random' for now
+ * Get an array of words with the maxsize of the word and number of words or the word of the day
+ * @param {*} param0
  * @returns
  */
-
-// Je sais pas pourquoi il charge plein de fois ?
-function GetWord({ type }) {
-  const [word, setWord] = useState();
+const GetWord = ({ type, nbWord, maxSize }) => {
+  const [words, setWords] = useState(null);
 
   useEffect(() => {
-    let apiUrl = '';
+    const fetchData = async () => {
+      try {
+        const apiUrl = type === 'daily' ? 'https://trouve-mot.fr/api/daily' : `https://trouve-mot.fr/api/sizemax/${maxSize}/${nbWord}`;
+        const response = await fetch(apiUrl);
+        const data = await response.json();
 
-    if (type === 'daily') {
-      apiUrl = 'https://trouve-mot.fr/api/daily';
-    } else if (type === 'random') {
-      apiUrl = 'https://trouve-mot.fr/api/random';
-    } else {
-      console.error('Type Invalid. Use "daily" or "random"');
-      return;
-    }
-    fetch(apiUrl)
-      .then(response => response.json())
-      .then(data => {
-        // Random gives an array of words even if only one, so we cant use the same logic as for daily
-        if (type === 'random') {
-          if (data.length > 0) {
-            setWord(data[0].name);
-          } else {
-            console.error('No word found in response:', data);
-          }
+        // Check if it's a random type and data is an array
+        if (type === 'random' && Array.isArray(data)) {
+          const fetchedWords = data.map(item => item.name).slice(0, nbWord);
+          setWords(fetchedWords);
         } else {
-          setWord(data.name);
+          const fetchedWord = type === 'daily' ? data.name : data[0]?.name;
+          setWords([fetchedWord]);
         }
-      })
-      // Sometimes the API is down or overused so we need to catch an error
-      .catch(error => console.error('Error fetching word:', error));
-  }, [type]);
-  console.log('Word:', word);
-  return word;
-}
+      } catch (error) {
+        console.error('Error fetching word:', error); // Too many tries or the api is down
+      }
+    };
+
+    fetchData();
+
+  }, [type, nbWord, maxSize ]); // Dependency array including type, nbWord and maxSize
+
+  console.log(words); // Log the word(s) to the console
+
+  return words;
+};
 
 export default GetWord;
