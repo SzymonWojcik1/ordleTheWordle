@@ -1,38 +1,47 @@
 import { useState, useEffect } from 'react';
 
-/**
- * Get an array of words with the maxsize of the word and number of words or the word of the day
- * @param {*} param0
- * @returns
- */
 const GetWord = ({ type, nbWord, maxSize }) => {
   const [words, setWords] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const apiUrl = type === 'daily' ? 'https://trouve-mot.fr/api/daily' : `https://trouve-mot.fr/api/sizemax/${maxSize}/${nbWord}`;
-        const response = await fetch(apiUrl);
-        const data = await response.json();
+        const today = new Date().toISOString().split('T')[0]; // Today date YYYY-MM-DD
+        const storedData = JSON.parse(localStorage.getItem('dailyWord')) || {};
 
-        // Check if it's a random type and data is an array
-        if (type === 'random' && Array.isArray(data)) {
-          const fetchedWords = data.map(item => item.name).slice(0, nbWord);
-          setWords(fetchedWords);
+        if (type === 'daily' && storedData.word && storedData.date === today) {
+          setWords([storedData.word]);
         } else {
-          const fetchedWord = type === 'daily' ? data.name : data[0]?.name;
-          setWords([fetchedWord]);
+          let fetchedWord;
+          do {
+            await new Promise(resolve => setTimeout(resolve, 500)); // Delay de 0.5sec to let it find the word and not give null/undifined
+            const apiUrl = type === 'daily' ? 'https://trouve-mot.fr/api/sizemax/8/1' : `https://trouve-mot.fr/api/sizemax/${maxSize}/${nbWord}`;
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+
+            if (type === 'random' && Array.isArray(data)) {
+              const fetchedWords = data.map(item => item.name).slice(0, nbWord);
+              setWords(fetchedWords);
+              fetchedWord = fetchedWords[0];
+            } else {
+              fetchedWord = data[0]?.name;
+              setWords([fetchedWord]);
+
+              if (type === 'daily') {
+                localStorage.setItem('dailyWord', JSON.stringify({ word: fetchedWord, date: today }));
+              }
+            }
+          } while (fetchedWord === undefined);
         }
       } catch (error) {
-        console.error('Error fetching word:', error); // Too many tries or the api is down
+        console.error('Error fetching word:', error);
       }
     };
 
     fetchData();
+  }, [type, nbWord, maxSize ]);
 
-  }, [type, nbWord, maxSize ]); // Dependency array including type, nbWord and maxSize
-
-  console.log(words); // Log the word(s) to the console
+  console.log(words);
 
   return words;
 };

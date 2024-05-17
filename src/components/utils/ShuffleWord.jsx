@@ -21,7 +21,7 @@ const ShuffleWord = ({ words }) => {
     // Join the shuffled characters back into a word
     const shuffledWord = chars.join('');
 
-    // Check if the shuffled word is the same as the original word
+    // Check if the shuffled word is the same as the original word 
     if (shuffledWord === word) {
       return shuffleWord(word);
     }

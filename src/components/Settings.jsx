@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 
-const Home = () => {
+const Settings = () => {
 
   return (
     <>
-      <h1>HOME</h1>
+      <h1>Settings</h1>
     </>
   );
 };
 
-export default Home;
+export default Settings;
