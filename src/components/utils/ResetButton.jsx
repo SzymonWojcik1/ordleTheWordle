@@ -2,7 +2,7 @@
 
 const ResetButton = ({ onReset }) => {
   return (
-    <button onClick={onReset}>Reset</button>
+    <button onClick={onReset}>Reset the letters</button>
   );
 };
 

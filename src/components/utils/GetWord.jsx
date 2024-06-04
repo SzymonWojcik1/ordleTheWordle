@@ -15,7 +15,7 @@ const GetWord = ({ type, nbWord, maxSize }) => {
           let fetchedWord;
           do {
             await new Promise(resolve => setTimeout(resolve, 500)); // Delay de 0.5sec to let it find the word and not give null/undifined
-            const apiUrl = type === 'daily' ? 'https://trouve-mot.fr/api/sizemax/8/1' : `https://trouve-mot.fr/api/sizemax/${maxSize}/${nbWord}`;
+            const apiUrl = type === 'daily' ? 'https://trouve-mot.fr/api/sizemax/6/1' : `https://trouve-mot.fr/api/sizemax/${maxSize}/${nbWord}`;
             const response = await fetch(apiUrl);
             const data = await response.json();
 
