@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 
-const GetWord = ({ type, nbWord, maxSize }) => {
+const GetWord = ({ type, maxSize }) => {
   const [words, setWords] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const today = new Date().toISOString().split('T')[0]; // Today date YYYY-MM-DD
-        const storedData = JSON.parse(localStorage.getItem('dailyWord')) || {};
+        const storedData = JSON.parse(localStorage.getItem('dailyWordStatus')) || {};
 
         if (type === 'daily' && storedData.word && storedData.date === today) {
           setWords([storedData.word]);
@@ -15,12 +15,12 @@ const GetWord = ({ type, nbWord, maxSize }) => {
           let fetchedWord;
           do {
             await new Promise(resolve => setTimeout(resolve, 500)); // Delay de 0.5sec to let it find the word and not give null/undifined
-            const apiUrl = type === 'daily' ? 'https://trouve-mot.fr/api/sizemax/6/1' : `https://trouve-mot.fr/api/sizemax/${maxSize}/${nbWord}`;
+            const apiUrl = type === 'daily' ? 'https://trouve-mot.fr/api/sizemax/6/1' : `https://trouve-mot.fr/api/sizemax/${maxSize}`;
             const response = await fetch(apiUrl);
             const data = await response.json();
 
             if (type === 'random' && Array.isArray(data)) {
-              const fetchedWords = data.map(item => item.name).slice(0, nbWord);
+              const fetchedWords = data.map(item => item.name).slice(0);
               setWords(fetchedWords);
               fetchedWord = fetchedWords[0];
             } else {
@@ -28,7 +28,7 @@ const GetWord = ({ type, nbWord, maxSize }) => {
               setWords([fetchedWord]);
 
               if (type === 'daily') {
-                localStorage.setItem('dailyWord', JSON.stringify({ word: fetchedWord, date: today }));
+                localStorage.setItem('dailyWordStatus', JSON.stringify({ word: fetchedWord, date: today, won: "no"}));
               }
             }
           } while (fetchedWord === undefined);
@@ -39,7 +39,7 @@ const GetWord = ({ type, nbWord, maxSize }) => {
     };
 
     fetchData();
-  }, [type, nbWord, maxSize ]);
+  }, [type, maxSize ]);
 
   console.log(words);
 

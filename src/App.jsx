@@ -15,7 +15,7 @@ function App() {
       <h1>Ordle The Wordle</h1>
       <Link to="/"><button >Home</button></Link>
       <Link to="/dailyword"><button>Daily Word</button></Link>
-      <Link to="/randomword"><button >Random Words</button></Link>
+      <Link to="/randomword"><button >Random Word</button></Link>
       <Link to='/leaderboard'><button>Leaderboard</button></Link>
       <Link to='/settings'><button>Settings</button></Link>
 
