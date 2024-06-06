@@ -11,12 +11,11 @@ const RandomWord = () => {
   const handleRefresh = () => {
     window.location.reload(); // Reload the page
   };
-  const words = GetWord({ type: 'random', maxSize : '4'});
+  const words = GetWord({ type: 'random'});
   const [shuffledWord, setShuffledWord] = useState(null);
   const [selectedLetters, setSelectedLetters] = useState([]);
   const [reset, setReset] = useState(false);
   const [hasWon, setHasWon] = useState(false);
-  const [timeUntilNextWord, setTimeUntilNextWord] = useState('');
   const [startTime, setStartTime] = useState(null);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [playerName, setPlayerName] = useState('');
@@ -42,7 +41,7 @@ const RandomWord = () => {
     if (!hasWon && startTime) {
       timerInterval = setInterval(() => {
         setElapsedTime(Date.now() - startTime);
-      }, 100); // Update every millisecond
+      }, 100);
     } else if (hasWon) {
       clearInterval(timerInterval);
     }
@@ -69,7 +68,7 @@ const RandomWord = () => {
   const handleRegister = () => {
     if (playerName.trim()) {
       const difficultyFactor = calculateDifficultyFactor(words);
-      const adjustedScore = elapsedTime * difficultyFactor;
+      const adjustedScore = (elapsedTime * difficultyFactor).toFixed(2);
 
       const playerData = {
         name: playerName,

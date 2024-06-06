@@ -50,7 +50,7 @@ const DailyWord = () => {
     if (!hasWon && startTime) {
       timerInterval = setInterval(() => {
         setElapsedTime(Date.now() - startTime);
-      }, 100); // Update every 100 milliseconds
+      }, 100);
     } else if (hasWon) {
       clearInterval(timerInterval);
     }
@@ -68,6 +68,7 @@ const DailyWord = () => {
   }, [selectedLetters, dailyWord]);
 
   useEffect(() => {
+    // Get the time before midnight to show the player how much time is left before next word
     const updateTimer = () => {
       const now = new Date();
       const midnight = new Date();
@@ -79,11 +80,12 @@ const DailyWord = () => {
       setTimeUntilNextWord(`${hours}h ${minutes}m ${seconds}s`);
     };
     updateTimer(); // Update immediately
-    const timerInterval = setInterval(updateTimer, 1000); // Update every second
+    const timerInterval = setInterval(updateTimer, 1000);
     return () => clearInterval(timerInterval);
   }, [hasWon, isDailyWordWon]);
 
   const formatElapsedTime = (elapsedTime) => {
+    // time of plyer on word
     const totalSeconds = Math.floor(elapsedTime / 1000);
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
@@ -95,9 +97,10 @@ const DailyWord = () => {
   };
 
   const handleRegister = () => {
+    // Register the player score and calculate the score
     if (playerName.trim()) {
       const difficultyFactor = calculateDifficultyFactor(dailyWord);
-      const adjustedScore = elapsedTime * difficultyFactor;
+      const adjustedScore = (elapsedTime * difficultyFactor).toFixed(2);
 
       const playerData = {
         name: playerName,
@@ -132,6 +135,7 @@ const DailyWord = () => {
     }
   };
 
+  // Prevent showing nothing or null or first word gets always re-intiated
   if (isLoading) {
     return (
       <div>
@@ -140,6 +144,7 @@ const DailyWord = () => {
     );
   }
 
+  // Don't let the player play it again after winning
   if (isDailyWordWon) {
     return (
       <div>

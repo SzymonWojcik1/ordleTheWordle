@@ -1,9 +1,4 @@
 /* eslint-disable react/prop-types */
-/**
- * Shuffle the words in the array in a random manner
- * @param {*} param0
- * @returns an array with shuffled words
- */
 const ShuffleWord = ({ words }) => {
   // Function to shuffle a single word
   const shuffleWord = (word) => {
@@ -18,10 +13,10 @@ const ShuffleWord = ({ words }) => {
       [chars[i], chars[j]] = [chars[j], chars[i]];
     }
 
-    // Join the shuffled characters back into a word
+    // Join the letters to form the word
     const shuffledWord = chars.join('');
 
-    // Check if the shuffled word is the same as the original word 
+    // Check if the shuffled word is the same as the original word
     if (shuffledWord === word) {
       return shuffleWord(word);
     }

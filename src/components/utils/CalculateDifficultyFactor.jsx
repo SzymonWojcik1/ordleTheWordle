@@ -1,7 +1,7 @@
 export const calculateDifficultyFactor = (words) => {
   let totalLength = 0;
 
-  // Calculate the total length of all words in the array
+  // Calculate the total length of the word in the array
   for (let word of words) {
     totalLength += word.length;
   }
