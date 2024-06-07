@@ -52,7 +52,7 @@ const Settings = () => {
       <h1>Settings</h1>
       <div>
         <label>
-          Enter Number:
+          Maximum of letters in <strong>Random Word</strong> : 
           <input
             type="text"
             value={number}
