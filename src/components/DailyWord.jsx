@@ -159,7 +159,7 @@ const DailyWord = () => {
 
   return (
     <>
-      <h3>Word: {dailyWord}</h3>
+      <h3>Word: </h3>
       <WordButtons word={shuffledWord} onLetterClick={(letter) => handleLetterSelect(letter, selectedLetters, setSelectedLetters, dailyWord, setHasWon)} reset={reset} />
       <SelectedLetters letters={selectedLetters} />
       {!hasWon && <ResetButton onReset={() => handleReset(setSelectedLetters, setReset, reset)} />}

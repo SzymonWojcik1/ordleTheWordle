@@ -102,7 +102,7 @@ const RandomWord = () => {
 
   return (
     <>
-      <h3>Random Word : {words}</h3>
+      <h3>Random Word : </h3>
       <WordButtons word={shuffledWord} onLetterClick={(letter) => handleLetterSelect(letter, selectedLetters, setSelectedLetters, words, setHasWon)} reset={reset} />
       <SelectedLetters letters={selectedLetters} />
       {!hasWon && <ResetButton onReset={() => handleReset(setSelectedLetters, setReset, reset)} />}
